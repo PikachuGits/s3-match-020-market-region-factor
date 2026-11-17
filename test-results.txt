@@ -1,0 +1,59 @@
+S3-MATCH-020 本地验证记录
+日期：2026-11-17（CST）
+环境：Python 3.12.12（ClawHunt .venv）与 Python 3.14.7（系统 python3）；仅使用 Python 标准库；未安装 pytest
+
+单元测试命令（在任务目录/解压目录执行）：
+PYTHONPATH=. python3 -m unittest -v test_market_region_factor
+
+结果：
+test_all_blank_items_count_as_a_missing_logical_side (test_market_region_factor.MarketRegionFactorTests.test_all_blank_items_count_as_a_missing_logical_side) ... ok
+test_blank_items_are_ignored_when_other_codes_are_present (test_market_region_factor.MarketRegionFactorTests.test_blank_items_are_ignored_when_other_codes_are_present) ... ok
+test_boundary_defaults_are_declared (test_market_region_factor.MarketRegionFactorTests.test_boundary_defaults_are_declared) ... ok
+test_direct_parent_child_scores_point_seven_in_both_directions (test_market_region_factor.MarketRegionFactorTests.test_direct_parent_child_scores_point_seven_in_both_directions) ... ok
+test_direct_siblings_score_point_three (test_market_region_factor.MarketRegionFactorTests.test_direct_siblings_score_point_three) ... ok
+test_duplicate_demand_codes_are_deduplicated (test_market_region_factor.MarketRegionFactorTests.test_duplicate_demand_codes_are_deduplicated) ... ok
+test_empty_candidate_side_is_neutral_without_reason_but_with_evidence (test_market_region_factor.MarketRegionFactorTests.test_empty_candidate_side_is_neutral_without_reason_but_with_evidence) ... ok
+test_empty_demand_side_is_neutral_without_reason_but_with_evidence (test_market_region_factor.MarketRegionFactorTests.test_empty_demand_side_is_neutral_without_reason_but_with_evidence) ... ok
+test_exact_match_scores_one (test_market_region_factor.MarketRegionFactorTests.test_exact_match_scores_one) ... ok
+test_exact_national_match_precedes_national_override (test_market_region_factor.MarketRegionFactorTests.test_exact_national_match_precedes_national_override) ... ok
+test_hierarchy_rejects_cycles (test_market_region_factor.MarketRegionFactorTests.test_hierarchy_rejects_cycles) ... ok
+test_hierarchy_rejects_duplicate_codes (test_market_region_factor.MarketRegionFactorTests.test_hierarchy_rejects_duplicate_codes) ... ok
+test_hierarchy_rejects_missing_parent (test_market_region_factor.MarketRegionFactorTests.test_hierarchy_rejects_missing_parent) ... ok
+test_hierarchy_rejects_non_string_parent_code (test_market_region_factor.MarketRegionFactorTests.test_hierarchy_rejects_non_string_parent_code) ... ok
+test_national_candidate_does_not_get_special_score_for_non_domestic (test_market_region_factor.MarketRegionFactorTests.test_national_candidate_does_not_get_special_score_for_non_domestic) ... ok
+test_national_code_must_be_a_nonempty_string (test_market_region_factor.MarketRegionFactorTests.test_national_code_must_be_a_nonempty_string) ... ok
+test_national_special_applies_to_deeper_domestic_descendant (test_market_region_factor.MarketRegionFactorTests.test_national_special_applies_to_deeper_domestic_descendant) ... ok
+test_national_special_overrides_direct_parent_child (test_market_region_factor.MarketRegionFactorTests.test_national_special_overrides_direct_parent_child) ... ok
+test_non_direct_ancestor_uses_zero_assumption (test_market_region_factor.MarketRegionFactorTests.test_non_direct_ancestor_uses_zero_assumption) ... ok
+test_non_iterable_region_codes_are_rejected (test_market_region_factor.MarketRegionFactorTests.test_non_iterable_region_codes_are_rejected) ... ok
+test_non_string_region_code_is_rejected (test_market_region_factor.MarketRegionFactorTests.test_non_string_region_code_is_rejected) ... ok
+test_parent_child_depth_boundary_is_direct_edge_only (test_market_region_factor.MarketRegionFactorTests.test_parent_child_depth_boundary_is_direct_edge_only) ... ok
+test_root_regions_are_not_siblings_without_a_parent (test_market_region_factor.MarketRegionFactorTests.test_root_regions_are_not_siblings_without_a_parent) ... ok
+test_same_candidate_from_two_sources_scores_once_but_keeps_both_sources (test_market_region_factor.MarketRegionFactorTests.test_same_candidate_from_two_sources_scores_once_but_keeps_both_sources) ... ok
+test_source_field_names_must_be_nonempty_strings (test_market_region_factor.MarketRegionFactorTests.test_source_field_names_must_be_nonempty_strings) ... ok
+test_tied_best_pairs_are_all_retained_in_stable_order (test_market_region_factor.MarketRegionFactorTests.test_tied_best_pairs_are_all_retained_in_stable_order) ... ok
+test_two_candidate_sources_are_unioned_and_best_is_per_demand (test_market_region_factor.MarketRegionFactorTests.test_two_candidate_sources_are_unioned_and_best_is_per_demand) ... ok
+test_unknown_candidate_code_is_a_data_error (test_market_region_factor.MarketRegionFactorTests.test_unknown_candidate_code_is_a_data_error) ... ok
+test_unknown_nonblank_code_is_a_data_error_not_missing_or_zero (test_market_region_factor.MarketRegionFactorTests.test_unknown_nonblank_code_is_a_data_error_not_missing_or_zero) ... ok
+test_unmatched_demand_region_contributes_zero_to_average (test_market_region_factor.MarketRegionFactorTests.test_unmatched_demand_region_contributes_zero_to_average) ... ok
+test_unrelated_valid_regions_use_explicit_zero_assumption (test_market_region_factor.MarketRegionFactorTests.test_unrelated_valid_regions_use_explicit_zero_assumption) ... ok
+
+----------------------------------------------------------------------
+Ran 31 tests in 0.001s
+
+OK
+
+语法检查命令（在任务目录/解压目录执行）：
+python3 -m py_compile market_region_factor.py test_market_region_factor.py
+结果：退出码 0
+
+边界默认值：
+UNRELATED_PAIR_SCORE=0.0；PARENT_CHILD_MAX_DEPTH=1（仅直接边）。
+无关系按 0.0 计入逐需求最佳分与平均值，不生成匹配证据；祖父/孙等更深祖先不按父子计 0.7。
+
+覆盖摘要：
+AC1 四种分值与全国特例优先级；AC2 三个需求地域逐项最佳分、两候选源并集、来源证据和容差平均；
+未匹配需求以 0.0 纳入平均分母；AC3 整侧缺失 0.5、reason/evidence 分离；
+边界常量、直接父子深度、重复需求去重、根节点非兄弟、部分空项、非直接祖先、未知编码及层级数据校验。
+
+限制：这是本地归一化 DTO 原型；尚未与真实 S2-TAX schema/客户仓库集成，未向 ClawHunt 上传或提交。
